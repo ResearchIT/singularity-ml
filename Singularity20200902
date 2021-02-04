@@ -12,7 +12,7 @@ CUDA_VERSION=11-0
 NVML_VERSION=7
 PYTHON3_PACKAGES="setuptools>=41.0.0 tensorflow-gpu numpy<1.19.0,>=1.16.0 keras pillow scikit-learn pandas pandas_ml matplotlib>=3.0.0 mxnet mlxtend tensorboard jupyter jupyterlab"
 yum install -y epel-release dnf-plugins-core
-curl https://copr.fedorainfracloud.org/coprs/vbatts/bazel/repo/epel-7/vbatts-bazel-epel-7.repo -o /etc/yum.repos.d/vbatts-bazel-epel-7.repo
+curl https://copr.fedorainfracloud.org/coprs/vbatts/bazel/repo/epel-7/vbatts-bazel-epel-8.repo -o /etc/yum.repos.d/vbatts-bazel-epel-8.repo
 yum clean all && yum makecache
 dnf config-manager -y --set-enabled PowerTools
 yum install -y @"Development Tools"
@@ -48,6 +48,17 @@ library(keras)
 EOL
 # Pytorch stuff
 python3 -m pip install torch torchvision
+#hacky library BS to support cuda 11 while providing "10.1" libs
+ln -s /usr/local/cuda/lib64/libcudart.so.11.0 /usr/local/cuda/lib64/libcudart.so.10.1
+ln -s /usr/local/cuda/lib64/libcublas.so.11 /usr/local/cuda/lib64/libcublas.so.10
+ln -s /usr/local/cuda/lib64/libcusparse.so.11 /usr/local/cuda/lib64/libcusparse.so.10
+ln -s /usr/lib64/libcudnn.so.8 /usr/lib64/libcudnn.so.7
+ln -s /usr/lib64/libcudnn_adv_infer.so.8 /usr/lib64/libcudnn_adv_infer.so.7
+ln -s /usr/lib64/libcudnn_adv_train.so.8 /usr/lib64/libcudnn_adv_train.so.7
+ln -s /usr/lib64/libcudnn_cnn_infer.so.8 /usr/lib64/libcudnn_cnn_infer.so.7
+ln -s /usr/lib64/libcudnn_cnn_train.so.8 /usr/lib64/libcudnn_cnn_train.so.7
+ln -s /usr/lib64/libcudnn_ops_infer.so.8 /usr/lib64/libcudnn_ops_infer.so.7
+ln -s /usr/lib64/libcudnn_ops_train.so.8 /usr/lib64/libcudnn_ops_train.so.7
 
 %runscript
 exec $@
